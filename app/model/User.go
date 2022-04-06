@@ -4,7 +4,7 @@ var UserTable string = "users"
 
 type User struct {
 	BaseModel
-	ID       int    `gorm:"primary_key"`
-	Nickname string `gorm:"vachar(20)";not null`
-	Unionid  string `gorm:"vachar(100)";not null`
+	Nickname string `gorm:"type:varchar(20);not null;comment:昵称"`
+	Avatar   string `gorm:"type:varchar(250);not null;comment:头像"`
+	Unionid  string `gorm:"type:varchar(100);not null;comment:union_id"`
 }

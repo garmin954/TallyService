@@ -2,15 +2,14 @@ package routes
 
 import (
 	"fmt"
+	"smg/app/controller"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
-func Init() {
+func Init(engine *gin.Engine) {
 	router := gin.New()
-	// LoggerWithFormatter middleware will write the logs to gin.DefaultWriter
-	// By default gin.DefaultWriter = os.Stdout
 	router.Use(gin.LoggerWithFormatter(func(param gin.LogFormatterParams) string {
 		// your custom format
 		return fmt.Sprintf("%s - [%s] \"%s %s %s %d %s \"%s\" %s\"\n",
@@ -26,4 +25,11 @@ func Init() {
 		)
 	}))
 	router.Use(gin.Recovery())
+
+	regsiterRouter(engine)
+}
+
+// 注册路由
+func regsiterRouter(router *gin.Engine) {
+	new(controller.UserController).Router(router)
 }

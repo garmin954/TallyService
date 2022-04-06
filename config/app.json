@@ -1,0 +1,23 @@
+{
+    "app_name": "smg",
+    "app_mode": "debug",
+    "app_host": "127.0.0.1",
+    "app_port": "8080",
+    "database":{
+        "driver": "mysql",
+        "user": "root",
+        "password": "garmin",
+        "host": "127.0.0.1",
+        "port": "3306",
+        "db_name": "ginweb",
+        "charset": "utf8",
+        "show_sql": true
+
+    },
+    "sms":{
+        "sign_name":"larabbs",
+        "template_code":"SMS_236815018",
+        "access_key_id":"LTAI4GBSC9JCpTcUGmrAXqCN",
+        "access_key_secret":"b4GORHwM1Zz1s9joQmFt9Z9MXDeD4w"
+    }
+}
