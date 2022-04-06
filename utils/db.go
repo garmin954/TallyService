@@ -25,7 +25,7 @@ func ConnectDB() *gorm.DB {
 		log.Fatal(err.Error())
 	}
 
-	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&model.User{}, &model.Ledger{})
 
 	DB = db
 	return DB
