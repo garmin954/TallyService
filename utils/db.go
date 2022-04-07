@@ -31,6 +31,7 @@ func ConnectDB() *gorm.DB {
 		&model.LedgerRecord{},
 		&model.LedgerUser{},
 		&model.Planning{},
+		&model.Classify{},
 	)
 
 	DB = db

@@ -19,5 +19,9 @@
         "template_code":"SMS_236815018",
         "access_key_id":"LTAI4GBSC9JCpTcUGmrAXqCN",
         "access_key_secret":"b4GORHwM1Zz1s9joQmFt9Z9MXDeD4w"
+    },
+    "jwt": {
+        "key": "b4GORHwM1Zz1s9joQmFt9Z9MXDeD4w",
+        "expire": 86400
     }
 }

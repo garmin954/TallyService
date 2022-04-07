@@ -1,2 +1,0 @@
-# smg
-.\main.go:21:14: cannot use &engine (type **gin.Engine) as type *gin.Engine in argument to routes.Init

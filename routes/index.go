@@ -31,5 +31,8 @@ func Init(engine *gin.Engine) {
 
 // 注册路由
 func regsiterRouter(router *gin.Engine) {
-	new(controller.UserController).Router(router)
+	engine := router.Group("/api")
+	new(controller.User).Router(engine)
+	new(controller.Ledger).Router(engine)
+	new(controller.LedgerRecord).Router(engine)
 }

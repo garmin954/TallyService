@@ -2,12 +2,12 @@ package middleware
 
 import (
 	"errors"
-	"ginblog/utils"
-	"ginblog/utils/errmsg"
+	"net/http"
+	"smg/utils"
+	"strings"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"strings"
 )
 
 type JWT struct {
@@ -16,12 +16,13 @@ type JWT struct {
 
 func NewJWT() *JWT {
 	return &JWT{
-		[]byte(utils.JwtKey),
+		[]byte(utils.Configs.Jwt.Key),
 	}
 }
 
 type MyClaims struct {
 	Username string `json:"username"`
+	Uid      int    `json:"uid"`
 	jwt.StandardClaims
 }
 
@@ -44,7 +45,7 @@ func (j *JWT) ParserToken(tokenString string) (*MyClaims, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &MyClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return j.JwtKey, nil
 	})
-	
+
 	if err != nil {
 		if ve, ok := err.(*jwt.ValidationError); ok {
 			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
@@ -59,14 +60,14 @@ func (j *JWT) ParserToken(tokenString string) (*MyClaims, error) {
 			}
 		}
 	}
-	
+
 	if token != nil {
 		if claims, ok := token.Claims.(*MyClaims); ok && token.Valid {
 			return claims, nil
 		}
 		return nil, TokenInvalid
 	}
-	
+
 	return nil, TokenInvalid
 }
 
@@ -75,59 +76,61 @@ func JwtToken() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var code int
 		tokenHeader := c.Request.Header.Get("Authorization")
+		code = utils.ERROR_TOKEN_EXIST
 		if tokenHeader == "" {
-			code = errmsg.ERROR_TOKEN_EXIST
 			c.JSON(http.StatusOK, gin.H{
-				"status":  code,
-				"message": errmsg.GetErrMsg(code),
+				"code": code,
+				"msg":  utils.GetErrMsg(code),
 			})
 			c.Abort()
 			return
 		}
-		
+
 		checkToken := strings.Split(tokenHeader, " ")
+
 		if len(checkToken) == 0 {
 			c.JSON(http.StatusOK, gin.H{
-				"status":  code,
-				"message": errmsg.GetErrMsg(code),
+				"code": code,
+				"msg":  utils.GetErrMsg(code),
 			})
 			c.Abort()
 			return
 		}
-		
+
 		if len(checkToken) != 2 || checkToken[0] != "Bearer" {
 			c.JSON(http.StatusOK, gin.H{
-				"status":  code,
-				"message": errmsg.GetErrMsg(code),
+				"code": code,
+				"msg":  utils.GetErrMsg(code),
 			})
 			c.Abort()
 			return
 		}
-		
+
 		j := NewJWT()
 		// 解析token
 		claims, err := j.ParserToken(checkToken[1])
 		if err != nil {
 			if err == TokenExpired {
 				c.JSON(http.StatusOK, gin.H{
-					"status":  errmsg.ERROR,
-					"message": "token授权已过期,请重新登录",
-					"data":    nil,
+					"code": utils.AUTHORIZATION_HAS_EXPIRED,
+					"msg":  utils.GetErrMsg(utils.AUTHORIZATION_HAS_EXPIRED),
+					"data": nil,
 				})
 				c.Abort()
 				return
 			}
 			// 其他错误
 			c.JSON(http.StatusOK, gin.H{
-				"status":  errmsg.ERROR,
-				"message": err.Error(),
-				"data":    nil,
+				"code": utils.AUTHORIZATION_HAS_EXPIRED,
+				"msg":  err.Error(),
+				"data": nil,
 			})
 			c.Abort()
 			return
 		}
-		
-		c.Set("username", claims)
+
+		c.Set("userinfo", claims)
+		c.Set("uid", claims.Uid)
 		c.Next()
 	}
 }

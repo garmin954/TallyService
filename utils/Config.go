@@ -3,6 +3,7 @@ package utils
 import (
 	"bufio"
 	"encoding/json"
+	"fmt"
 	"log"
 	"os"
 )
@@ -14,6 +15,7 @@ type Config struct {
 	AppPort  string         `json:"app_port"`
 	Database DatabaseConfig `json:"database"`
 	Sms      SmsConfig      `json:"sms"`
+	Jwt      JwtConfig      `json:"jwt"`
 }
 
 type SmsConfig struct {
@@ -34,10 +36,24 @@ type DatabaseConfig struct {
 	ShowSql  bool   `json:"show_sql"`
 }
 
-var _cfg *Config = nil
+type JwtConfig struct {
+	Key    string `json:"key"`
+	Expire int64  `json:"expire"`
+}
+
+var Configs *Config = nil
+
+func init() {
+
+	_, err := ParesConfig("./config/app.json")
+	fmt.Println("-----------smg---------------------", Configs.Jwt)
+	if err != nil {
+		panic(err.Error())
+	}
+}
 
 func GetConfig() *Config {
-	return _cfg
+	return Configs
 }
 
 func ParesConfig(path string) (*Config, error) {
@@ -50,8 +66,8 @@ func ParesConfig(path string) (*Config, error) {
 	reader := bufio.NewReader(file)
 	decoer := json.NewDecoder(reader)
 
-	if err = decoer.Decode(&_cfg); err != nil {
+	if err = decoer.Decode(&Configs); err != nil {
 		return nil, err
 	}
-	return _cfg, nil
+	return Configs, nil
 }
