@@ -1,9 +1,13 @@
 package controller
 
 import (
+<<<<<<< HEAD
 	"fmt"
 	"smg/app/middleware"
 	"smg/app/model"
+=======
+	"smg/app/middleware"
+>>>>>>> f5f42371f1c38e0ec7b08a45c1148b681c15329c
 	"smg/app/service"
 	"smg/utils"
 
@@ -17,20 +21,28 @@ func (ledgerRecord *LedgerRecord) Router(engine *gin.RouterGroup) {
 	route := group.Use(middleware.JwtToken())
 
 	route.GET("", ledgerRecord.list)
+<<<<<<< HEAD
 	route.POST("", ledgerRecord.create)
 	route.PUT("", ledgerRecord.update)
 	route.DELETE("", ledgerRecord.delete)
+=======
+>>>>>>> f5f42371f1c38e0ec7b08a45c1148b681c15329c
 }
 
 // 获取记录
 func (ledgerRecord *LedgerRecord) list(ctx *gin.Context) {
 	var s service.LedgerRecord
+<<<<<<< HEAD
 	pr, err := s.Pagination(ctx)
+=======
+	pr, err := s.Pagination()
+>>>>>>> f5f42371f1c38e0ec7b08a45c1148b681c15329c
 	if err != nil {
 		utils.Failed(ctx, err.Error)
 	}
 	utils.Success(ctx, pr)
 }
+<<<<<<< HEAD
 
 func (ledgerRecord *LedgerRecord) create(ctx *gin.Context) {
 	var params model.LedgerRecord
@@ -74,3 +86,5 @@ func (ledgerRecord *LedgerRecord) delete(ctx *gin.Context) {
 
 	utils.Success(ctx, "")
 }
+=======
+>>>>>>> f5f42371f1c38e0ec7b08a45c1148b681c15329c

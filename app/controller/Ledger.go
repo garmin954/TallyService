@@ -12,8 +12,13 @@ type Ledger struct{}
 
 type CreateParams struct {
 	Name  string `form:"name" json:"name" binding:"required"`
+<<<<<<< HEAD
 	Desc  string `form:"desc" json:"desc" `
 	Cover string `form:"cover" json:"cover" `
+=======
+	Desc  string `form:"desc"`
+	Cover string `form:"cover"`
+>>>>>>> f5f42371f1c38e0ec7b08a45c1148b681c15329c
 	Uid   int    `form:"uid" json:"uid"`
 }
 
