@@ -1,0 +1,19 @@
+.statistics{
+  height: 250px;
+  background-color: #05742f;
+  padding-top: calc(120px + env(safe-area-inset-bottom));
+
+  .filter{
+    padding: 0px 30px;
+
+    .type{
+      display: inline-block;
+      background-color: rgba(#cfd9df, 0.5);
+      padding: 10px 20px;
+      border-radius: 5px;
+      height: auto;
+    }
+  }
+
+
+}

@@ -83,6 +83,9 @@ func (user *User) register(ctx *gin.Context) {
 	params.Password = utils.Md5(params.Password + salt)
 
 	result := utils.DB.Table(model.UserTable).Create(&params)
+
+	//TODO 创建默认账本 以及和用户的对应关系
+
 	if result.Error != nil {
 		utils.Failed(ctx, result.Error.Error())
 		return

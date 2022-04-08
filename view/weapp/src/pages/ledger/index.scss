@@ -1,0 +1,70 @@
+page {
+  background-color: white;
+  padding: 14px;
+  box-sizing: border-box;
+  color: #333;
+}
+
+.ledger-box{
+  height: 280px;
+  position: relative;
+  margin: 20px 0px;
+
+  .close{
+    position: absolute;
+    right: 25px;
+    top: 15px;
+  }
+
+  .ledger {
+    width: 100%;
+    border: 1px solid #fff;
+    border-radius: 20px;
+    height: 180px;
+    box-shadow: 5px 5px 50px #dbdbdb;
+    position: absolute;
+    bottom: 0px;
+
+    .cover {
+      width: 230px;
+      height: 230px;
+      position: absolute;
+      left: 30px;
+      top: -100px;
+      border-radius: 10px;
+      background-color: #f5f7fa;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .intro {
+      width: 380px;
+      margin-left: 280px;
+      padding: 35px 0px;
+
+      .name {
+        font-size: 38px;
+        font-weight: 500;
+        margin-left: 30px;
+      }
+
+      .count-box{
+        margin-top: 10px;
+      }
+
+      .count-item {
+        text-align: center;
+        .count{
+          font-size: 30px;
+          display: block;
+        }
+        .sort-t{
+          font-size: 20px;
+          color: #808080;
+          display: block;
+        }
+      }
+    }
+  }
+}
+
