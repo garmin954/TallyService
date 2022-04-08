@@ -191,3 +191,8 @@ $fontsize:10,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,32,34,36,3
   /*清除两侧的浮动*/
   clear:both;
   }
+
+  @font-face {font-family:"Alibaba PuHuiTi Medium";src: url("https://oss.emakerzone.com/tips/Alibaba-PuHuiTi-Medium.otf");font-display: swap;}
+  @font-face {font-family:"Alibaba PuHuiTi";src: url("https://oss.emakerzone.com/tips/Alibaba-PuHuiTi-Regular.otf");font-display: swap;}
+  .anim_medium{font-family: "Alibaba PuHuiTi Medium";}
+  .anim_regular{font-family: "Alibaba PuHuiTi";}
