@@ -1,0 +1,44 @@
+.ledger-card{
+  background-color: #fff;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  font-family: Alibaba PuHuiTi;
+  width: 690px;
+
+  &:nth-last-child(1){
+    margin-bottom: calc(60px + env(safe-area-inset-bottom));
+  }
+
+
+  .time{
+    color: #c8c8c8;
+    font-size:medium;
+  }
+  .statistics-ledger{
+    color: #c8c8c8;
+  }
+
+  .record{
+    .record-item{
+      margin-top: 20px;
+      .tag-icon{
+        width: 50px;
+        height: 50px;
+        display: block;
+      }
+
+      .intro{
+        width: calc(100% - 60px);
+
+        .header{
+          width: 100%;
+        }
+        .tag-box{
+          color: #c8c8c8;
+          font-size: 20px;
+        }
+      }
+    }
+  }
+}
