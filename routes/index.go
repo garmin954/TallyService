@@ -3,6 +3,7 @@ package routes
 import (
 	"fmt"
 	"smg/app/controller"
+	"smg/app/middleware"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -32,6 +33,8 @@ func Init(engine *gin.Engine) {
 // 注册路由
 func regsiterRouter(router *gin.Engine) {
 	engine := router.Group("/api")
+	engine.Use(middleware.Cors())
+
 	new(controller.User).Router(engine)
 	new(controller.Ledger).Router(engine)
 	new(controller.LedgerRecord).Router(engine)

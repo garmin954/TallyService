@@ -1,3 +1,17 @@
 .gm-scroll{
   // background-color: aquamarine;
+
+  .load-more{
+    width: 100%;
+    height: 120px;
+    line-height: 120px;
+    text-align: center;
+    // margin-bottom: calc(10px + env(safe-area-inset-bottom));
+
+    .loading{
+      vertical-align: baseline;
+      margin-right: 10px;
+      animation:turn 1s linear infinite;
+    }
+  }
 }

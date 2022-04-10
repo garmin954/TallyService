@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"fmt"
+	"log"
 	"net/http"
 	"smg/app/middleware"
 	"smg/app/model"
@@ -8,6 +10,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/idoubi/goz"
 )
 
 type User struct {
@@ -34,6 +37,7 @@ func (user *User) Router(engine *gin.RouterGroup) {
 	route.GET("/query_users", user.queryUsers)
 
 	engine.POST("/login", user.login)
+	engine.POST("/wxlogin", user.wxlogin)
 	engine.POST("/register", user.register)
 }
 
@@ -71,6 +75,38 @@ func (user *User) login(ctx *gin.Context) {
 	}
 
 	utils.Success(ctx, map[string]interface{}{"token": token, "expired": claims.ExpiresAt})
+}
+
+type wxloginParams struct {
+	Code string `form:"code" json:"code"`
+}
+
+// 微信登录
+func (user *User) wxlogin(ctx *gin.Context) {
+	var params wxloginParams
+	ctx.ShouldBind(&params)
+
+	cli := goz.NewClient()
+
+	url := fmt.Sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",
+		"wx8ee1d2607ce3dd67",
+		"5c7b99bbae37070f81c2ac2b1f1dac22",
+		params.Code,
+	)
+
+	fmt.Println(url)
+
+	resp, err := cli.Get(url)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	fmt.Printf("%T", resp)
+	// Output: *goz.Response
+	res, _ := resp.GetBody()
+
+	utils.Success(ctx, utils.JsonToMap(res.GetContents()))
+
 }
 
 // 注册

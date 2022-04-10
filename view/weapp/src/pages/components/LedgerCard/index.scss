@@ -6,11 +6,6 @@
   font-family: Alibaba PuHuiTi;
   width: 690px;
 
-  &:nth-last-child(1){
-    margin-bottom: calc(60px + env(safe-area-inset-bottom));
-  }
-
-
   .time{
     color: #c8c8c8;
     font-size:medium;

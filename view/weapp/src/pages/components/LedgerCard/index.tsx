@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Image, Text } from "@tarojs/components";
+import { View, Text } from "@tarojs/components";
 import "./index.scss"
+import IconFont from "@/utils/iconfont";
 
-const business = require("./icon_business.png")
+
 
 const Index = () => {
 
@@ -14,7 +15,7 @@ const Index = () => {
       </View>
       <View className="record mt-20">
         <View className="record-item flex">
-          <Image className="tag-icon" src={business}></Image>
+          <IconFont name="bonus" size={50} />
           <View className="intro ml-10">
             <View className="header flex jc-space-between">
               <Text className="title">沃尔玛超市消费</Text>

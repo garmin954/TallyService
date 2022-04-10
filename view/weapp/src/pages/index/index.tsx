@@ -5,10 +5,32 @@ import { AtIcon } from "taro-ui";
 import { getNavBarInfo } from "../../utils/index";
 import LedgerCard from "../components/LedgerCard/index"
 import MScroll from "../components/Scroll/index"
+import Taro from "@tarojs/taro";
+import { useReady } from "@tarojs/taro";
 
 const Index = () => {
 
   const {navBarHeight=0} = getNavBarInfo()
+
+  useReady(()=>{
+    Taro.login({
+      success: function (res) {
+        console.log(res)
+        if (res.code) {
+          //发起网络请求
+          Taro.request({
+            method:"POST",
+            url: 'http://192.168.31.180:8080/api/wxlogin',
+            data: {
+              code: res.code
+            }
+          })
+        } else {
+          console.log('登录失败！' + res.errMsg)
+        }
+      }
+    })
+  })
 
   return (
     <View className="home">
@@ -25,7 +47,7 @@ const Index = () => {
           </View>
         </View>
       <View className="container" style={{paddingTop: navBarHeight+20+"px"}}>
-        <MScroll style={{height:"100%"}}>
+        <MScroll style={{height:`calc(100vh - ${navBarHeight+50}px)`}}>
           <View className="summarize m30">
             <View className="flex mb-30">
               <View className="count-item">

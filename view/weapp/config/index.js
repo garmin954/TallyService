@@ -1,3 +1,4 @@
+const path = require('path')
 const config = {
   projectName: "myApp",
   date: "2022-4-8",
@@ -16,6 +17,9 @@ const config = {
     options: {},
   },
   framework: "react",
+  alias: {
+    '@': path.resolve(__dirname, '..', 'src'),
+  },
   mini: {
     postcss: {
       pxtransform: {

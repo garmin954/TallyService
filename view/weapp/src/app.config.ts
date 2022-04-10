@@ -1,4 +1,6 @@
+import { useGlobalIconFont } from './utils/iconfont/helper';
 export default {
+  usingComponents: Object.assign(useGlobalIconFont()),
   pages: [
     "pages/index/index",
     "pages/login/index",

@@ -3,6 +3,7 @@ package utils
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"encoding/json"
 	"math/rand"
 	"time"
 )
@@ -24,4 +25,17 @@ func Md5(str string) string {
 	h := md5.New()
 	h.Write([]byte(str))
 	return hex.EncodeToString(h.Sum(nil))
+}
+
+func JsonToMap(str string) map[string]interface{} {
+
+	var tempMap map[string]interface{}
+
+	err := json.Unmarshal([]byte(str), &tempMap)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return tempMap
 }
