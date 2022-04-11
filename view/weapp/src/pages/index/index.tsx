@@ -20,7 +20,7 @@ const Index = () => {
           //发起网络请求
           Taro.request({
             method:"POST",
-            url: 'http://192.168.31.180:8080/api/wxlogin',
+            url: 'http://192.168.1.21:8080/api/wxlogin',
             data: {
               code: res.code
             }
