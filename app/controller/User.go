@@ -1,16 +1,13 @@
 package controller
 
 import (
-	"fmt"
-	"log"
 	"net/http"
 	"smg/app/middleware"
 	"smg/app/model"
+	"smg/app/service"
 	"smg/utils"
-	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/idoubi/goz"
 )
 
 type User struct {
@@ -37,7 +34,7 @@ func (user *User) Router(engine *gin.RouterGroup) {
 	route.GET("/query_users", user.queryUsers)
 
 	engine.POST("/login", user.login)
-	engine.POST("/wxlogin", user.wxlogin)
+	engine.POST("/wxlogin", user.wxLogin)
 	engine.POST("/register", user.register)
 }
 
@@ -49,81 +46,56 @@ func (user *User) login(ctx *gin.Context) {
 		return
 	}
 
-	var info model.User
-	utils.DB.Table(model.UserTable).Where("username = ?", params.Username).Find(&info)
-
-	if info.ID <= 0 {
-		utils.Failed(ctx, "账号不存在")
-		return
-	}
-
-	pw := utils.Md5(params.Password + info.Salt)
-	if pw != info.Password {
-		utils.Failed(ctx, "密码不正确")
-		return
-	}
-
-	claims := middleware.MyClaims{}
-	claims.Username = info.Username
-	claims.Uid = info.ID
-	claims.ExpiresAt = time.Now().Unix() + utils.Configs.Jwt.Expire
-
-	token, err := middleware.NewJWT().CreateToken(claims)
+	var SUser service.User
+	r, err := SUser.CheckUser(params.Username, params.Password)
 	if err != nil {
-		utils.Failed(ctx, "生成token失败")
+		utils.Failed(ctx, err.Error())
 		return
 	}
 
-	utils.Success(ctx, map[string]interface{}{"token": token, "expired": claims.ExpiresAt})
+	utils.Success(ctx, r)
 }
 
-type wxloginParams struct {
+type wxLoginParams struct {
 	Code string `form:"code" json:"code"`
 }
 
+type WXLoginResponse struct {
+	UserInfo   *model.User `json:"userInfo"`
+	IsRegister bool        `json:"isRegister"`
+}
+
 // 微信登录
-func (user *User) wxlogin(ctx *gin.Context) {
-	var params wxloginParams
+func (user *User) wxLogin(ctx *gin.Context) {
+	var params wxLoginParams
 	ctx.ShouldBind(&params)
 
-	cli := goz.NewClient()
-
-	url := fmt.Sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code",
-		"wx8ee1d2607ce3dd67",
-		"5c7b99bbae37070f81c2ac2b1f1dac22",
-		params.Code,
-	)
-
-	fmt.Println(url)
-
-	resp, err := cli.Get(url)
+	var SWechat service.Wechat
+	res, err := SWechat.GetCode(params.Code)
 	if err != nil {
-		log.Fatalln(err)
+		utils.Failed(ctx, err.Error())
+		return
 	}
 
-	fmt.Printf("%T", resp)
-	// Output: *goz.Response
-	res, _ := resp.GetBody()
+	response := new(WXLoginResponse)
+	r := utils.DB.Table(model.UserTable).Where("openid = ?", res.Openid).Find(&response.UserInfo)
+	response.IsRegister = response.UserInfo.ID > 0
+	if r.Error != nil {
+		utils.Failed(ctx, r.Error.Error())
+		return
+	}
 
-	utils.Success(ctx, utils.JsonToMap(res.GetContents()))
-
+	utils.Success(ctx, response)
 }
 
 // 注册
 func (user *User) register(ctx *gin.Context) {
-	var params RegisterParams
+	var params model.User
 	ctx.ShouldBind(&params)
 
-	salt := utils.RandomStr(10)
-	params.Salt = salt
-	params.Password = utils.Md5(params.Password + salt)
-
-	result := utils.DB.Table(model.UserTable).Create(&params)
-
-	//TODO 创建默认账本 以及和用户的对应关系
-
-	if result.Error != nil {
-		utils.Failed(ctx, result.Error.Error())
+	var SUser *service.User
+	if _, err := SUser.CreateUser(&params); err != nil {
+		utils.Failed(ctx, err.Error())
 		return
 	}
 	utils.Success(ctx, params)

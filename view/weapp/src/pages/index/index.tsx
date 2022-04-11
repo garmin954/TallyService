@@ -7,23 +7,23 @@ import LedgerCard from "../components/LedgerCard/index"
 import MScroll from "../components/Scroll/index"
 import Taro from "@tarojs/taro";
 import { useReady } from "@tarojs/taro";
+import { useRequest } from "taro-hooks";
+import api from "@/api";
 
 const Index = () => {
 
   const {navBarHeight=0} = getNavBarInfo()
 
+  const {run, data} = useRequest(api.wxLogin, {manual: true})
   useReady(()=>{
     Taro.login({
       success: function (res) {
         console.log(res)
         if (res.code) {
+
           //发起网络请求
-          Taro.request({
-            method:"POST",
-            url: 'http://192.168.31.180:8080/api/wxlogin',
-            data: {
-              code: res.code
-            }
+          run({code: res.code}).then(response=>{
+            console.log(response)
           })
         } else {
           console.log('登录失败！' + res.errMsg)
