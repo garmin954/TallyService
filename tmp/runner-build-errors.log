@@ -1,0 +1,2 @@
+# smg/app/controller
+app\controller\User.go:88:18: cannot use utils.If(response.IsRegister, res.Openid, "1") (type interface {}) as type string in assignment: need type assertion

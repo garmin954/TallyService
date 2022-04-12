@@ -39,3 +39,10 @@ func JsonToMap(str string) map[string]interface{} {
 
 	return tempMap
 }
+
+func If(condition bool, trueVal, falseVal interface{}) interface{} {
+	if condition {
+		return trueVal
+	}
+	return falseVal
+}

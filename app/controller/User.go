@@ -63,6 +63,7 @@ type wxLoginParams struct {
 type WXLoginResponse struct {
 	UserInfo   *model.User `json:"userInfo"`
 	IsRegister bool        `json:"isRegister"`
+	Openid     string      `json:"openid"`
 }
 
 // 微信登录
@@ -84,6 +85,7 @@ func (user *User) wxLogin(ctx *gin.Context) {
 		utils.Failed(ctx, r.Error.Error())
 		return
 	}
+	response.Openid = res.Openid
 
 	utils.Success(ctx, response)
 }
