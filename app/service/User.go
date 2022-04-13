@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"fmt"
 	"smg/app/middleware"
 	"smg/app/model"
 	"smg/utils"
@@ -18,7 +17,6 @@ func (user *User) CreateUser(params *model.User) (*model.User, error) {
 	utils.DB.Table(model.UserTable).Where("username = ?", params.Username).Find(&info)
 
 	if info.ID > 0 {
-		fmt.Println("account already exists")
 		return nil, errors.New("account already exists")
 	}
 
@@ -26,11 +24,20 @@ func (user *User) CreateUser(params *model.User) (*model.User, error) {
 	params.Salt = salt
 	params.Password = utils.Md5(params.Password + salt)
 
-	result := utils.DB.Table(model.UserTable).Create(&params)
+	tx := utils.DB.Begin()
+	result := tx.Table(model.UserTable).Create(&params)
 	if result.Error != nil {
+		tx.Rollback()
 		return nil, result.Error
 	}
 
+	var MUser model.MUser
+	err := MUser.InitUserLedger(tx, params.ID)
+	if err != nil {
+		tx.Rollback()
+		return nil, err
+	}
+	utils.DB.Commit()
 	return params, nil
 }
 

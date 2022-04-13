@@ -46,5 +46,7 @@ export default (options: OptionsType = { method: 'GET', data: {}, url: '', noLoa
     if (!noConsole) {
       console.log(`${new Date().toLocaleString('zh', { hour12: false })}【${options.url} 】【返回】`, res.data);
     }
+
+    return Promise.resolve(res.data)
   });
 };

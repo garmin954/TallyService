@@ -18,7 +18,6 @@ const rspInterceptor = (chain) => {
   const requestParams = chain.requestParams;
 
   return chain.proceed(requestParams).then((res) => {
-    console.log(res)
     if (res.statusCode > 200 && res.statusCode < 300) {
       return Promise.reject('请求资源不存在');
     } else if (res.statusCode === HTTP_STATUS.BAD_GATEWAY) {
@@ -31,7 +30,7 @@ const rspInterceptor = (chain) => {
       Taro.setStorageSync('Authorization', '');
       return Promise.reject('需要鉴权');
     } else if (res.statusCode === HTTP_STATUS.SUCCESS) {
-      return res.data;
+      return Promise.resolve(res.data);
     }
   });
 };

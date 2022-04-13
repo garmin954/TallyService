@@ -36,6 +36,8 @@ func (user *User) Router(engine *gin.RouterGroup) {
 	engine.POST("/login", user.login)
 	engine.POST("/wxlogin", user.wxLogin)
 	engine.POST("/register", user.register)
+	engine.POST("/wxregister", user.wxRegister)
+
 }
 
 // 登录
@@ -63,7 +65,6 @@ type wxLoginParams struct {
 type WXLoginResponse struct {
 	UserInfo   *model.User `json:"userInfo"`
 	IsRegister bool        `json:"isRegister"`
-	Openid     string      `json:"openid"`
 }
 
 // 微信登录
@@ -85,9 +86,48 @@ func (user *User) wxLogin(ctx *gin.Context) {
 		utils.Failed(ctx, r.Error.Error())
 		return
 	}
-	response.Openid = res.Openid
 
 	utils.Success(ctx, response)
+}
+
+type WXRegisterParams struct {
+	EncryptedData string `json:"encryptedData" form:"encryptedData"`
+	Iv            string `json:"iv" form:"iv"`
+	Code          string `json:"code" form:"code"`
+}
+
+// 微信注册用户
+func (user *User) wxRegister(ctx *gin.Context) {
+	var params WXRegisterParams
+	ctx.ShouldBind(&params)
+
+	var SWechat service.Wechat
+	res, err := SWechat.GetCode(params.Code)
+	if err != nil {
+		utils.Failed(ctx, err.Error())
+		return
+	}
+	userInfo, err := SWechat.Decrypt(params.EncryptedData, params.Iv, res.SessionKey)
+	if err != nil {
+		utils.Failed(ctx, err.Error())
+		return
+	}
+
+	info := model.User{
+		Username: userInfo.NickName,
+		NickName: userInfo.NickName,
+		Avatar:   userInfo.AvatarURL,
+		Openid:   res.Openid,
+		Password: "gm123654",
+	}
+	var SUser *service.User
+	r, err := SUser.CreateUser(&info)
+	if err != nil {
+		utils.Failed(ctx, err.Error())
+		return
+	}
+
+	utils.Success(ctx, r)
 }
 
 // 注册
