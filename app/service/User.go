@@ -37,7 +37,7 @@ func (user *User) CreateUser(params *model.User) (*model.User, error) {
 		tx.Rollback()
 		return nil, err
 	}
-	utils.DB.Commit()
+	tx.Commit()
 	return params, nil
 }
 

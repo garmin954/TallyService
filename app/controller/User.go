@@ -114,8 +114,8 @@ func (user *User) wxRegister(ctx *gin.Context) {
 	}
 
 	info := model.User{
-		Username: userInfo.NickName,
-		NickName: userInfo.NickName,
+		Username: userInfo.Nickname,
+		Nickname: userInfo.Nickname,
 		Avatar:   userInfo.AvatarURL,
 		Openid:   res.Openid,
 		Password: "gm123654",
@@ -145,7 +145,7 @@ func (user *User) register(ctx *gin.Context) {
 
 func (user *User) queryUsers(ctx *gin.Context) {
 	var results []map[string]interface{}
-	utils.DB.Table(model.UserTable).Select("nickname,id").Find(&results)
+	utils.DB.Table(model.UserTable).Select("Nickname,id").Find(&results)
 
 	ctx.JSON(http.StatusOK, map[string]interface{}{
 		"code": 0,

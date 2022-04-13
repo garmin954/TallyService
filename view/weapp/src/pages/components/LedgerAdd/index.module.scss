@@ -1,0 +1,6 @@
+.addBtn{
+  position: fixed;
+  bottom: calc(140px + env(safe-area-inset-bottom));
+  right: 30px;
+  z-index: 9;
+}

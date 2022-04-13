@@ -57,7 +57,7 @@ func (wechat *Wechat) GetCode(code string) (rep *JsCodeSession, err error) {
 type WxUserInfo struct {
 	OpenID    string `json:"openId"`
 	UnionID   string `json:"unionId"`
-	NickName  string `json:"nickName"`
+	Nickname  string `json:"nickName"`
 	Gender    int    `json:"gender"`
 	City      string `json:"city"`
 	Province  string `json:"province"`

@@ -9,6 +9,7 @@ import Taro from "@tarojs/taro";
 import { useReady } from "@tarojs/taro";
 import { useRequest } from "taro-hooks";
 import api from "@/api";
+import LedgerAdd from "../components/LedgerAdd";
 
 const Index = () => {
 
@@ -73,6 +74,8 @@ const Index = () => {
         </MScroll>
       </View>
       {/* 流水 */}
+
+      <LedgerAdd />
     </View>
   );
 };

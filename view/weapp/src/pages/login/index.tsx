@@ -5,6 +5,7 @@ import './index.scss'
 import Taro, { useReady } from "@tarojs/taro";
 import api from "@/api";
 import { useRequest } from "taro-hooks";
+import LedgerAdd from "../components/LedgerAdd";
 
 
 const Index = () => {
@@ -63,6 +64,9 @@ const Index = () => {
         <Image src={userInfo?.userInfo?.avatar}></Image>
         {userInfo?.userInfo?.nickname}
         </View>:<View>loading</View>}
+
+      <LedgerAdd />
+
     </View>
   );
 };
