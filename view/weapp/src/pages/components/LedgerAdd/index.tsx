@@ -20,8 +20,8 @@ const LedgerAdd = () =>{
         </AtFab>
       </View>
 
-      <Popup visible={openForm} onClose={()=>setOpenForm(false)} title={'title'}>
-        <View>Test</View>
+      <Popup animationTime={600} visible={openForm} onClose={()=>setOpenForm(false)} title={'title'}>
+        <View style={{height: '70vh'}}>Test</View>
       </Popup>
       <View>
 
