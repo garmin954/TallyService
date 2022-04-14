@@ -4,6 +4,7 @@ import { AtFab, AtFloatLayout } from "taro-ui";
 import style from "./index.module.scss"
 import { useReady } from "@tarojs/taro";
 import IconFont from "@/utils/iconfont";
+import Popup from "../Popup";
 
 const LedgerAdd = () =>{
 
@@ -19,10 +20,12 @@ const LedgerAdd = () =>{
         </AtFab>
       </View>
 
-      <AtFloatLayout isOpened={openForm}  title="这是个标题" onClose={()=>setOpenForm(false)}>
-        这是内容区 随你怎么写这是内容区 随你怎么写这是内容区 随你怎么写这是内容区
-        随你怎么写这是内容区 随你怎么写这是内容区 随你怎么写
-      </AtFloatLayout>
+      <Popup visible={openForm} onClose={()=>setOpenForm(false)} title={'title'}>
+        <View>Test</View>
+      </Popup>
+      <View>
+
+      </View>
     </>
   )
 }

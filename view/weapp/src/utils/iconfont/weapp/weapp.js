@@ -1,6 +1,6 @@
 Component({
   properties: {
-    // wirt | business | bonus | clothes | daily | food | donate | houserent | intrest | fuel | entertainment | other | medicine | salary | makeup | shopping | study | phone | tour | smoke_wine | traffic | winning | investment
+    // closefill | wirt | business | bonus | clothes | daily | food | donate | houserent | intrest | fuel | entertainment | other | medicine | salary | makeup | shopping | study | phone | tour | smoke_wine | traffic | winning | investment
     name: {
       type: String,
     },

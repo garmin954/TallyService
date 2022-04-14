@@ -1,0 +1,71 @@
+
+
+.drawer {
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 79;
+
+  .mask{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 7;
+    transition: all 0.25s ease-in-out 0s;
+    transform: scale(1, 1);
+    display: none;
+  }
+
+  .show{
+    display: block;
+  }
+
+  .popup {
+    min-height: 300px;
+    border-radius: 20px 20px 0px 0px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 80;
+    background-color: #fff;
+    font-family: Alibaba PuHuiTi;
+
+    .header{
+      height: 45px;
+      line-height: 45px;
+      padding: 0 15px;
+      position: relative;
+
+      .title{
+        width: 100%;
+        padding: 0px 30px;
+        margin-top: 30px;
+        display: block;
+        box-sizing: border-box;
+        font-weight: 500;
+      }
+      .close{
+          align-self: center;
+          right: 30px;
+          top: 0;
+          position: absolute;
+          display: inline-block;
+        }
+    }
+
+    .container{
+      margin-top: 30px;
+      height: 100%;
+      // padding-bottom: calc(0px + env(safe-area-inset-bottom));
+    }
+  }
+
+}
