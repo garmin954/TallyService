@@ -14,6 +14,7 @@ type Props = {
   close?: JSX.Element // 关闭
   onClose?: () => void // 关闭
   animationTime?: number // 动画时间
+  catchMove?:boolean // 阻止滑动
 }
 
 const Popup = (props: Props) => {
@@ -26,7 +27,8 @@ const Popup = (props: Props) => {
     onClose,
     hideHeader = true,
     animationTime = 500,
-    close = <View onClick={onClose} ><IconFont color={"#488605"} size={50} name={"closefill"} /></View>
+    close = <View onClick={onClose} ><IconFont color={"#488605"} size={50} name={"closefill"} /></View>,
+    catchMove= false
   } = props
   const [originVisible, setOriginVisible] = useState(visible)
 
@@ -43,6 +45,7 @@ const Popup = (props: Props) => {
 
   }, [visible])
 
+  const preventTouchMove = () =>{}
 
   return (
     <CustomWrapper>
@@ -53,7 +56,9 @@ const Popup = (props: Props) => {
         <View
           style={{ transition: `all ease ${animationTime / 1000}s`, opacity: `${visible ? "1" : "0"}`, display: originVisible ? "unset" : 'none' }}
           className={`${style.mask} ${showMask ? style.show : ''}`}
-          onClick={onClose}></View>
+          onClick={onClose}
+          catch-move={catchMove}
+        />
         <View
           style={{ transition: `all ease ${animationTime / 1000}s`, transform: `translate(0px, ${visible ? "0%" : "100%"})` }}
           className={style.popup}

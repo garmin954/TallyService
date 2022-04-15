@@ -2,8 +2,8 @@ import Taro from '@tarojs/taro';
 import interceptors from './interceptors';
 
 // 请求连接前缀
-// export const baseUrl = "http://192.168.31.180:8080";
-export const baseUrl = "http://192.168.1.21:8080";
+export const baseUrl = "http://192.168.31.180:8080";
+// export const baseUrl = "http://192.168.1.21:8080";
 
 // 输出日志信息
 export const noConsole = false;

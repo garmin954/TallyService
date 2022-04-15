@@ -27,3 +27,38 @@
   z-index: 79;
 
 }
+.container{
+  height: 70vh;
+  padding:0px 30px;
+  box-sizing: border-box;
+  padding-bottom: calc(safa-area-inser-bottom);
+
+  .amountBox{
+    position: relative;
+    &::after{
+      position: absolute;
+      content: '';
+      display: block;
+      height: 1px;
+      width: 100%;
+      background-color: crimson;
+      bottom: 1px;
+    }
+    .unit{
+      font-size: 30px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .focus{
+      color: red;
+      font-weight: 600;
+      animation: buling 1s infinite;
+    }
+  }
+}
+
+@keyframes buling{
+  from {opacity:1}
+  to {opacity:0.1}
+}

@@ -1,4 +1,6 @@
 import { View, Text } from "@tarojs/components"
+import style from "./index.module.scss"
+
 import React, { useEffect, useState } from "react"
 import Popup from "@/pages/components/Popup"
 import IconFont from "@/utils/iconfont"
@@ -7,11 +9,15 @@ import api from "@/api"
 import { useReady } from "@tarojs/taro"
 import { AtCheckbox } from "taro-ui"
 
-const LedgerSelect = () => {
+type Props = {
+  selecteds: number[]
+  setSelecteds:(v:number[])=>void
+}
+const LedgerSelect = (props:Props) => {
   const [openForm, setOpenForm] = useState(false)
 
   const [ledgerOption, setLedgerOption] = useState([])
-  const [selectedList, setSelectedList] = useState([])
+  const {selecteds, setSelecteds} = props
 
 
   const { data, loading, run: fetchLedgerUser } = useRequest(api.fetchLedgerUser, { manual: true, cacheKey: `ledger_user`, formatResult:(res)=>res.data as any })
@@ -21,6 +27,7 @@ const LedgerSelect = () => {
         value:id,
         label:name,
         desc:desc,
+        disabled:false
       }))
       setLedgerOption(options)
     }
@@ -45,7 +52,7 @@ const LedgerSelect = () => {
 
   // 选择
   const changeLedgerOption = (e) =>{
-    setSelectedList(e)
+    setSelecteds(e)
     console.log(e)
   }
 
@@ -60,11 +67,11 @@ const LedgerSelect = () => {
       onClose={() => setOpenForm(false)}
       close={<CloseSlot />}
     >
-      <View className="">
+      <View className={style.ledgerList}>
 
       {loading ? <>loading</> : <AtCheckbox
         options={ledgerOption}
-        selectedList={selectedList}
+        selectedList={selecteds}
         onChange={changeLedgerOption}
       />}
       </View>
