@@ -12,6 +12,10 @@ export default {
     code: string
   }) => {
     return request({ method: "POST", data, url: '/api/wxregister' })
-  }
+  },
+
+  fetchLedgerUser: (data: {}) => {
+    return request({ method: "GET", data, url: '/api/ledger/user' })
+  },
 }
 

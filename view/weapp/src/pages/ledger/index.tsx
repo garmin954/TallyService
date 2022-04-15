@@ -2,7 +2,6 @@ import React from "react";
 import { View, Image, Text } from "@tarojs/components";
 import './index.scss'
 import { AtAvatar } from 'taro-ui'
-const ledgerImg = require("./ledger.png")
 
 const Index = () => {
 
@@ -19,7 +18,7 @@ const Index = () => {
         {/* 流水 */}
         <View className="ledger-box">
           <View className="ledger">
-            <Image src={ledgerImg} className="cover"></Image>
+            {/* <Image src={ledgerImg} className="cover"></Image> */}
             <View className="intro clearfix">
               <Text className="name mb-20">我的账本</Text>
               <View className='at-row count-box clearfix'>

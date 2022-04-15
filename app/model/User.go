@@ -14,7 +14,7 @@ type User struct {
 	Mobile   string `gorm:"type:varchar(11);not null;default:'';comment:手机" json:"mobile"`
 	Password string `gorm:"type:varchar(36);not null;default:'';comment:密码" json:"-"`
 	Salt     string `gorm:"type:varchar(20);not null;comment:盐" json:"-"`
-	Unionid  string `gorm:"type:varchar(36);not null;default:'';comment:union_id" json:"-"`
+	Unionid  string `gorm:"type:varchar(36);not null;default:'';comment:unionid" json:"-"`
 	Openid   string `gorm:"index:idx_openid,unique;type:varchar(36);not null;default:'';comment:openid" json:"-"`
 }
 

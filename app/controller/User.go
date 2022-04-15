@@ -65,6 +65,7 @@ type wxLoginParams struct {
 type WXLoginResponse struct {
 	UserInfo   *model.User `json:"userInfo"`
 	IsRegister bool        `json:"isRegister"`
+	service.TokenRes
 }
 
 // 微信登录
@@ -85,6 +86,17 @@ func (user *User) wxLogin(ctx *gin.Context) {
 	if r.Error != nil {
 		utils.Failed(ctx, r.Error.Error())
 		return
+	}
+
+	if response.UserInfo.ID > 0 {
+		var SUser *service.User
+		tr, err := SUser.GenerateToken(response.UserInfo.ID, response.UserInfo.Username)
+		if err != nil {
+			utils.Failed(ctx, err.Error())
+			return
+		}
+		response.Token = tr.Token
+		response.Expired = tr.Expired
 	}
 
 	utils.Success(ctx, response)

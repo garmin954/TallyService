@@ -3,13 +3,13 @@ import { View, Text, Block } from "@tarojs/components";
 import './index.scss'
 import { AtIcon } from "taro-ui";
 import { getNavBarInfo } from "../../utils/index";
-import LedgerCard from "../components/LedgerCard/index"
+import LedgerCard from "../components/Ledger/card/index"
 import MScroll from "../components/Scroll/index"
 import Taro from "@tarojs/taro";
 import { useReady } from "@tarojs/taro";
 import { useRequest } from "taro-hooks";
 import api from "@/api";
-import LedgerAdd from "../components/LedgerAdd";
+import LedgerAdd from "../components/Ledger/add";
 
 const Index = () => {
 

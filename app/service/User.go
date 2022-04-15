@@ -64,20 +64,38 @@ func (user *User) CheckUser(username string, password string) (*CheckUserRespons
 		return nil, errors.New("incorrect password")
 	}
 
-	claims := middleware.MyClaims{}
-	claims.Username = rep.UserInfo.Username
-	claims.Uid = rep.UserInfo.ID
-	claims.ExpiresAt = time.Now().Unix() + utils.Configs.Jwt.Expire
-
-	token, err := middleware.NewJWT().CreateToken(claims)
+	tr, err := user.GenerateToken(rep.UserInfo.ID, rep.UserInfo.Username)
 	if err != nil {
 		return nil, errors.New("failed to generate token")
 	}
 
-	rep.Token = token
-	rep.Expired = claims.ExpiresAt
+	rep.Token = tr.Token
+	rep.Expired = tr.Expired
 
 	return rep, nil
+}
+
+type TokenRes struct {
+	Expired int64  `json:"expired"`
+	Token   string `json:"token"`
+}
+
+// 生成token
+func (user *User) GenerateToken(id int, username string) (*TokenRes, error) {
+	claims := middleware.MyClaims{}
+	claims.Username = username
+	claims.Uid = id
+	claims.ExpiresAt = time.Now().Unix() + utils.Configs.Jwt.Expire
+
+	token, err := middleware.NewJWT().CreateToken(claims)
+	if err != nil {
+		return nil, err
+	}
+
+	r := new(TokenRes)
+	r.Token = token
+	r.Expired = claims.ExpiresAt
+	return r, nil
 }
 
 // func (user *User) EncryptPwd(pwd string, salt string) string {

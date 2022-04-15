@@ -15,6 +15,7 @@ const HTTP_STATUS = {
 };
 
 const rspInterceptor = (chain) => {
+  console.log("logInterceptor")
   const requestParams = chain.requestParams;
 
   return chain.proceed(requestParams).then((res) => {

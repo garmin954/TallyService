@@ -5,23 +5,25 @@ import './index.scss'
 import Taro, { useReady } from "@tarojs/taro";
 import api from "@/api";
 import { useRequest } from "taro-hooks";
-import LedgerAdd from "../components/LedgerAdd";
+import LedgerAdd from "../components/Ledger/add";
+import { useState } from "react";
 
 
 const Index = () => {
 
-  const { run: wxLogin, data: userInfo, loading: loadingUserInfo } = useRequest(api.wxLogin, { manual: true })
+  const [userInfo, setUserInfo] = useState<UserInfo>()
+  const { run: wxLogin, loading: loadingUserInfo } = useRequest(api.wxLogin, { manual: true })
   const { run: wxRegister } = useRequest(api.wxRegister, { manual: true })
 
   const isLogin = () =>{
     Taro.login({
       success({ code }) {
         wxLogin({ code }).then(response => {
-
+          console.log("response", response)
+          if(response.data.isRegister){
+            setUserInfo(response.data.userInfo)
+          }
         })
-        setTimeout(() => {
-          console.log("userInfo=============================", userInfo)
-        }, 2000);
       }
     })
   }
@@ -41,7 +43,7 @@ const Index = () => {
         Taro.login({
           success({ code }) {
             wxRegister({ code, encryptedData, iv }).then(response => {
-              console.log(response)
+              setUserInfo(response.data)
             })
           }
         })
@@ -53,16 +55,16 @@ const Index = () => {
   return (
     <View className="wrapper">
       {
-        !userInfo?.isRegister ? (
+        !userInfo ? (
           <Button className="button" onClick={getUserInfo}>
             login
           </Button>
         ) :null
       }
 
-      {!loadingUserInfo ? <View>
-        <Image src={userInfo?.userInfo?.avatar}></Image>
-        {userInfo?.userInfo?.nickname}
+      {!loadingUserInfo && userInfo ? <View>
+        <Image src={userInfo?.avatar}></Image>
+        {userInfo.nickname}
         </View>:<View>loading</View>}
 
       <LedgerAdd />
