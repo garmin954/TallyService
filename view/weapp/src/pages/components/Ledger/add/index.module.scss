@@ -56,6 +56,49 @@
       animation: buling 1s infinite;
     }
   }
+
+  .swiperItem{
+    display: inline-grid;
+    grid-template-columns: repeat(6,1fr);
+    grid-template-rows: 50% 50%;
+    grid-column-gap: 20px;
+  }
+  .classify{
+    .tagBox{
+      align-self: center;
+      width: 100px;
+      background-color: #cfd9df;
+      text-align: center;
+      .icon{
+        height: 60px;
+        width: 60px;
+        margin: 0 auto;
+        text-align: center;
+        background-color: #cfd9df;
+      }
+    }
+  }
+
+  .memoPic{
+    display: flex;
+    justify-content: space-between;
+
+    .date,.tag,.pic,.memo{
+      background-color: #cfd9df;
+      line-height: 60px;
+      height: 60px;
+      width: fit-content;
+      padding: 0 20px;
+      margin-left: 20px;
+      border-radius: 8px;
+
+    }
+    .memo{
+      margin-left: 0px;
+      width: 300px;
+      @extend .ellipsis-1;
+    }
+  }
 }
 
 @keyframes buling{

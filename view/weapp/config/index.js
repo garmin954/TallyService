@@ -59,7 +59,11 @@ const config = {
       },
     },
   },
-
+  sass: {
+    resource: [
+      path.resolve(__dirname, '..', 'src/static/css/common.scss'),
+    ]
+  }
 };
 
 module.exports = function (merge) {

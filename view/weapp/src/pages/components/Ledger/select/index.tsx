@@ -10,14 +10,14 @@ import { useReady } from "@tarojs/taro"
 import { AtCheckbox } from "taro-ui"
 
 type Props = {
-  selecteds: number[]
-  setSelecteds:(v:number[])=>void
+  value: number[]
+  onChange:(v:number[])=>void
 }
 const LedgerSelect = (props:Props) => {
   const [openForm, setOpenForm] = useState(false)
 
   const [ledgerOption, setLedgerOption] = useState([])
-  const {selecteds, setSelecteds} = props
+  const {value, onChange} = props
 
 
   const { data, loading, run: fetchLedgerUser } = useRequest(api.fetchLedgerUser, { manual: true, cacheKey: `ledger_user`, formatResult:(res)=>res.data as any })
@@ -52,7 +52,7 @@ const LedgerSelect = (props:Props) => {
 
   // 选择
   const changeLedgerOption = (e) =>{
-    setSelecteds(e)
+    onChange(e)
     console.log(e)
   }
 
@@ -68,10 +68,9 @@ const LedgerSelect = (props:Props) => {
       close={<CloseSlot />}
     >
       <View className={style.ledgerList}>
-
       {loading ? <>loading</> : <AtCheckbox
         options={ledgerOption}
-        selectedList={selecteds}
+        selectedList={value}
         onChange={changeLedgerOption}
       />}
       </View>

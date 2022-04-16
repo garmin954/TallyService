@@ -1,0 +1,37 @@
+.keyboard{
+  display: grid;
+  grid:
+  ' . . . del'
+  '. . .  button '
+  '. . .  button '
+  'zero zero dot  button';
+
+  padding: 10px;
+  grid-gap: 10px;
+
+  .button,.num,.zero,.del,.dot{
+    background-color: #cfd9df;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 30px;
+    border-radius: 8px;
+  }
+  .button{
+    grid-area: button;
+  }
+
+  .num{
+    // grid-area: num;
+  }
+
+  .zero{
+    grid-area: zero;
+  }
+
+  .del{
+    grid-area: del;
+  }
+  .dot{
+    grid-area: dot;
+  }
+}

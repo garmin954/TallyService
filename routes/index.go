@@ -38,4 +38,6 @@ func regsiterRouter(router *gin.Engine) {
 	new(controller.User).Router(engine)
 	new(controller.Ledger).Router(engine)
 	new(controller.LedgerRecord).Router(engine)
+	new(controller.Classify).Router(engine)
+
 }

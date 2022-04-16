@@ -17,5 +17,9 @@ export default {
   fetchLedgerUser: (data: {}) => {
     return request({ method: "GET", data, url: '/api/ledger/user' })
   },
+
+  fetchClassify: (data: {}) => {
+    return request({ method: "GET", data, url: '/api/classify' })
+  },
 }
 

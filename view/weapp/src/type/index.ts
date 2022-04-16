@@ -7,3 +7,14 @@ type UserInfo = {
   avatar: string
   mobile: string
 }
+
+
+type ClassifyInfo = {
+  cover: string
+  create_at: string
+  icon: string
+  id: number
+  name: string
+  sort: number
+  update_at: string
+}
