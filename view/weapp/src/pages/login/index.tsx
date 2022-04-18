@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Button, Image } from "@tarojs/components";
 
 import './index.scss'
@@ -6,7 +6,6 @@ import Taro, { useReady } from "@tarojs/taro";
 import api from "@/api";
 import { useRequest } from "taro-hooks";
 import LedgerAdd from "../components/Ledger/add";
-import { useState } from "react";
 
 
 const Index = () => {

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { View, Text, Swiper, SwiperItem } from "@tarojs/components"
-import { AtCalendar, AtFab, AtFloatLayout, AtTag } from "taro-ui";
+import { View, Text, Swiper, SwiperItem, Textarea } from "@tarojs/components"
+import { AtCalendar, AtFab, AtTag } from "taro-ui";
 import style from "./index.module.scss"
 import Taro, { useReady } from "@tarojs/taro";
 import IconFont from "@/utils/iconfont";
@@ -156,7 +156,10 @@ const LedgerAdd = () => {
 
           {/* 备注，图片 */}
           <View className={style.memoPic}>
-            <View className={style.memo}>
+            <View
+              className={style.memo}
+              onClick={() => setOpenState({ ...openState, memo: true })}
+            >
               {!state.memo ? '添加备注...' : state.memo}
             </View>
             <View className={style.date} onClick={() => setOpenState({ ...openState, time: true })}>今天</View>
@@ -201,7 +204,13 @@ const LedgerAdd = () => {
         onClose={() => setOpenState({ ...openState, memo: false })}
         catchMove={true}
       >
-        <>备注</>
+        <View className={style.memoPopup}>
+          <Textarea
+          cursorSpacing={250}
+          autoFocus={openState.memo}
+          focus={openState.memo}
+          />
+        </View>
       </Popup>
     </>
   )
