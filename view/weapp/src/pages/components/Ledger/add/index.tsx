@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, Swiper, SwiperItem } from "@tarojs/components"
 import { AtCalendar, AtFab, AtFloatLayout, AtTag } from "taro-ui";
 import style from "./index.module.scss"
@@ -10,11 +10,33 @@ import Keyboard from "../../Keyboard";
 import { useRequest } from "taro-hooks";
 import api from "@/api";
 
+// 创建表单
 type StateForm = {
   ledgerIds: number[],
   amount: string
   memo: string
+  type: 1|2 // 1支出 2收入
 }
+
+// popup 状态
+type OpenState = {
+  form: boolean
+  time: boolean
+  pic: boolean
+  memo: boolean
+}
+
+const RECORD_TYPE: Options[] = [
+  {
+    value: '1',
+    label: '支出'
+  },
+  {
+    value: '2',
+    label: '入账'
+  }
+]
+
 const PART_NUM: number = 12
 
 const LedgerAdd = () => {
@@ -23,10 +45,12 @@ const LedgerAdd = () => {
     formatClassify()
   }, [classify])
 
+  // 表单值
   const [state, setState] = useState<StateForm>({
     ledgerIds: [],
     amount: '',
-    memo:''
+    memo: '',
+    type: 1
   })
 
   const [classifyArr, setClassifyArr] = useState<ClassifyInfo[][]>([])
@@ -43,37 +67,42 @@ const LedgerAdd = () => {
     setClassifyArr(tagList)
   }
 
-  const [openForm, setOpenForm] = useState(false)
-  useEffect(() => {
-    openForm && fetchClassify({})
-  }, [openForm])
+  // 打开popup状态
+  const [openState, setOpenState] = useState<OpenState>({
+    form: false,
+    pic: false,
+    time: false,
+    memo: false
+  })
 
-  // 打开时间
-  const [openTime, setOpenTime] = useState(false)
+  useEffect(() => {
+    openState.form && fetchClassify({})
+  }, [openState.form])
+
 
   // 图片上传
-  const [openPic, setOpenPic] = useState(false)
-  const chooseImage = () =>{
+  const chooseImage = () => {
     Taro.chooseImage({
-      success (res) {
-        setOpenPic(true)
+      success(res) {
+        setOpenState({ ...openState, pic: true })
         const tempFilePaths = res.tempFilePaths
       }
     })
   }
 
+
   return (
     <>
       <View className={style.addBtn}>
-        <AtFab onClick={() => setOpenForm(true)}>
+        <AtFab onClick={() => setOpenState({ ...openState, form: true })}>
           <IconFont color="#fff" name="wirt" size={50} />
         </AtFab>
       </View>
 
       <Popup
         animationTime={600}
-        visible={openForm}
-        onClose={() => setOpenForm(false)}
+        visible={openState.form}
+        onClose={() => setOpenState({ ...openState, form: false })}
         title={<LedgerSelect
           value={state.ledgerIds}
           onChange={(ledgerIds) => {
@@ -83,19 +112,27 @@ const LedgerAdd = () => {
         catchMove={true}
       >
         <View className={style.container} catch-move={true}>
-          <View className="flex jc-space-between ai-center">
+          <View className={'flex jc-space-between ai-center mb-40 '+style.pn30}>
             <View>
-              <AtTag className="mr-20" active={true} type='primary'>支出</AtTag>
-              <AtTag className="mr-20" active={true} type='primary'>入账</AtTag>
-              <AtTag className="mr-20" active={true} type='primary'>不计入收支</AtTag>
+              {
+                RECORD_TYPE.map(opt => <AtTag
+                  className="mr-20"
+                  active={+opt.value === state.type}
+                  onClick={()=>{
+                    setState({...state, type: +opt.value > 1 ? 2 : 1})
+                  }}
+                >
+                  {opt.label}
+                </AtTag>)
+              }
             </View>
-            <View onClick={() => setOpenTime(true)}>4月22日</View>
+            <View onClick={() => setOpenState({ ...openState, time: true })}>4月22日</View>
           </View>
 
           {/* 金额 */}
           <View className={style.amountBox}>
             <View className={style.unit}>￥</View>
-            <View>{state.amount}<Text className={style.focus}>|</Text></View>
+            <View className={style.amountTxt}>{state.amount}<Text className={style.focus}>|</Text></View>
           </View>
 
           {/* 分类 */}
@@ -120,14 +157,15 @@ const LedgerAdd = () => {
           {/* 备注，图片 */}
           <View className={style.memoPic}>
             <View className={style.memo}>
-              {!state.memo ? '添加备注': state.memo}
+              {!state.memo ? '添加备注...' : state.memo}
             </View>
-            <View className={style.date} onClick={() => setOpenTime(true)}>今天</View>
+            <View className={style.date} onClick={() => setOpenState({ ...openState, time: true })}>今天</View>
             <View className={style.tag}>#</View>
             <View className={style.pic} onClick={chooseImage}>pic</View>
           </View>
           {/* 键盘 */}
           <Keyboard
+            className={style.pn30}
             value={`${state.amount}`}
             onChange={(amount) => {
               setState({ ...state, amount })
@@ -136,25 +174,34 @@ const LedgerAdd = () => {
       </Popup>
 
 
-
       {/* 时间 */}
       <Popup
         animationTime={300}
-        visible={openTime}
-        onClose={() => setOpenTime(false)}
+        visible={openState.time}
+        onClose={() => setOpenState({ ...openState, time: false })}
         catchMove={true}
       >
-        <AtCalendar onDayClick={() => setOpenTime(false)} />
+        <AtCalendar onDayClick={() => setOpenState({ ...openState, time: false })} />
       </Popup>
 
       {/* 图片上传 */}
       <Popup
         animationTime={300}
-        visible={openPic}
-        onClose={() => setOpenPic(false)}
+        visible={openState.pic}
+        onClose={() => setOpenState({ ...openState, pic: false })}
         catchMove={true}
       >
         <>图片</>
+      </Popup>
+
+      {/* 备注 */}
+      <Popup
+        animationTime={350}
+        visible={openState.memo}
+        onClose={() => setOpenState({ ...openState, memo: false })}
+        catchMove={true}
+      >
+        <>备注</>
       </Popup>
     </>
   )

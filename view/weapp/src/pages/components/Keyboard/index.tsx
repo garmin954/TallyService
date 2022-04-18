@@ -72,10 +72,11 @@ type Props = {
   value: string
   onChange: (val: string) => void
   onConfirm?: (val: string) => void
+  className?:string
 }
 
 const Keyboard = (props: Props) => {
-  const {value='', onChange, onConfirm} = props
+  const {value='', onChange, onConfirm, className=''} = props
   const [num, setNum] = useState<string>(value)
 
   useEffect(()=>{
@@ -103,7 +104,7 @@ const Keyboard = (props: Props) => {
     }
   }
 
-  return (<View className={style.keyboard}>
+  return (<View className={style.keyboard+" "+className}>
     {buttons.map(({ gap, value }) => <View onClick={() => clickButton(gap, value)} className={style[gap]}>{value}</View>)}
   </View>)
 }

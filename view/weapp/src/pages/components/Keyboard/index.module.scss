@@ -5,12 +5,10 @@
   '. . .  button '
   '. . .  button '
   'zero zero dot  button';
-
-  padding: 10px;
   grid-gap: 10px;
 
   .button,.num,.zero,.del,.dot{
-    background-color: #cfd9df;
+    background-color: #F7F7F7;
     text-align: center;
     padding: 20px 0;
     font-size: 30px;

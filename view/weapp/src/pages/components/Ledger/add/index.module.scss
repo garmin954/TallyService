@@ -5,6 +5,10 @@
   z-index: 9;
 }
 
+.pn30{
+  padding: 0px 30px;
+}
+
 .popup {
   height: 80vh;
   border-radius: 20px 20px 0px 0px;
@@ -28,24 +32,31 @@
 
 }
 .container{
-  height: 70vh;
-  padding:0px 30px;
   box-sizing: border-box;
   padding-bottom: calc(safa-area-inser-bottom);
 
   .amountBox{
     position: relative;
+    display: flex;
+    margin-bottom: 20px;
+    align-items: center;
+    @extend .pn30;
+
+    .amountTxt{
+      font-size: 60px;
+    }
+
     &::after{
       position: absolute;
       content: '';
       display: block;
       height: 1px;
-      width: 100%;
-      background-color: crimson;
-      bottom: 1px;
+      width: 690px;
+      background-color: #cfd9df;
+      bottom: -10px;
     }
     .unit{
-      font-size: 30px;
+      font-size: 60px;
       font-weight: 600;
       color: #333;
     }
@@ -62,19 +73,27 @@
     grid-template-columns: repeat(6,1fr);
     grid-template-rows: 50% 50%;
     grid-column-gap: 20px;
+    @extend .pn30;
+    box-sizing: border-box;
   }
   .classify{
     .tagBox{
       align-self: center;
       width: 100px;
-      background-color: #cfd9df;
       text-align: center;
       .icon{
-        height: 60px;
-        width: 60px;
+        height: 80px;
+        width: 80px;
+        line-height: 80px;
+        border-radius: 20px;
         margin: 0 auto;
         text-align: center;
-        background-color: #cfd9df;
+        background-color: #F7F7F7;
+        align-self: center;
+      }
+      .name{
+        font-size: 26px;
+        color: #333333;
       }
     }
   }
@@ -82,9 +101,12 @@
   .memoPic{
     display: flex;
     justify-content: space-between;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    @extend .pn30;
 
     .date,.tag,.pic,.memo{
-      background-color: #cfd9df;
+      background-color: #F7F7F7;
       line-height: 60px;
       height: 60px;
       width: fit-content;
@@ -96,6 +118,8 @@
     .memo{
       margin-left: 0px;
       width: 300px;
+      font-size: 30px;
+      color: #cfd9df;
       @extend .ellipsis-1;
     }
   }
