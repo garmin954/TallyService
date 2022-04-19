@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { View, Text, Swiper, SwiperItem, Textarea } from "@tarojs/components"
-import { AtCalendar, AtFab, AtTag } from "taro-ui";
+import { View, Text, Swiper, SwiperItem, Textarea, Button } from "@tarojs/components"
+import { AtButton, AtCalendar, AtFab, AtImagePicker, AtTag } from "taro-ui";
 import style from "./index.module.scss"
 import Taro, { useReady } from "@tarojs/taro";
 import IconFont from "@/utils/iconfont";
@@ -9,6 +9,8 @@ import LedgerSelect from "../select";
 import Keyboard from "../../Keyboard";
 import { useRequest } from "taro-hooks";
 import api from "@/api";
+import { File } from "taro-ui/types/image-picker";
+import { uploadOss } from "@/utils/upload";
 
 // 创建表单
 type StateForm = {
@@ -16,6 +18,7 @@ type StateForm = {
   amount: string
   memo: string
   type: 1|2 // 1支出 2收入
+  files: File[]
 }
 
 // popup 状态
@@ -50,7 +53,8 @@ const LedgerAdd = () => {
     ledgerIds: [],
     amount: '',
     memo: '',
-    type: 1
+    type: 1,
+    files: []
   })
 
   const [classifyArr, setClassifyArr] = useState<ClassifyInfo[][]>([])
@@ -83,9 +87,17 @@ const LedgerAdd = () => {
   // 图片上传
   const chooseImage = () => {
     Taro.chooseImage({
+      count: 2,
       success(res) {
+        console.log(res)
+        const files = res.tempFilePaths.map((src)=>({url:src}))
+        setState({...state, files})
+        uploadOss(files[0].url, 1).then(re=>{
+          console.log("re-------------------", re)
+        }).catch(re=>{
+          console.log("err-------------------", re)
+        })
         setOpenState({ ...openState, pic: true })
-        const tempFilePaths = res.tempFilePaths
       }
     })
   }
@@ -183,6 +195,7 @@ const LedgerAdd = () => {
         visible={openState.time}
         onClose={() => setOpenState({ ...openState, time: false })}
         catchMove={true}
+        title={"日期"}
       >
         <AtCalendar onDayClick={() => setOpenState({ ...openState, time: false })} />
       </Popup>
@@ -193,8 +206,15 @@ const LedgerAdd = () => {
         visible={openState.pic}
         onClose={() => setOpenState({ ...openState, pic: false })}
         catchMove={true}
+        title={"凭证图片"}
       >
-        <>图片</>
+        <AtImagePicker
+          mode='top'
+          files={state.files}
+          onChange={(e)=>{
+            console.log(e)
+          }}
+        />
       </Popup>
 
       {/* 备注 */}
@@ -203,13 +223,16 @@ const LedgerAdd = () => {
         visible={openState.memo}
         onClose={() => setOpenState({ ...openState, memo: false })}
         catchMove={true}
+        title={"备注"}
       >
         <View className={style.memoPopup}>
           <Textarea
-          cursorSpacing={250}
-          autoFocus={openState.memo}
-          focus={openState.memo}
+            cursorSpacing={250}
+            autoFocus={openState.memo}
+            focus={openState.memo}
+            showConfirmBar={false}
           />
+          <AtButton className={style.btn}>确认</AtButton>
         </View>
       </Popup>
     </>
